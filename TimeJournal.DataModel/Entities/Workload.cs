@@ -1,6 +1,8 @@
-﻿namespace TimeJournal.DataModel.Entities;
+﻿using TimeJournal.DataModel.Common;
 
-public class Workload
+namespace TimeJournal.DataModel.Entities;
+
+public class Workload : AuditedEntity
 {
     public int Id { get; set; }
     public int ActivityId { get; set; }

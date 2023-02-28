@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using TimeJournal;
+using TimeJournal.API.Infrastructure.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(o => o.Filters.Add<GlobalExceptionFilter>());
 builder.Services.AddTimeJournalDbContext(o => o.UseSqlServer(builder.Configuration.GetConnectionString("TimeJournal")));
 builder.Services.AddTimeJournalServices();
 
