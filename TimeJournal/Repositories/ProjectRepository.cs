@@ -15,6 +15,10 @@ public class ProjectRepository : IProjectRepository
     }
 
     public IQueryable<Project> Query() => _context.Project;
+    public async Task<IEnumerable<Project>> GetAll()
+    {
+        return await _context.Project.ToListAsync();
+    }
 
     public async Task Add(Project project)
     {

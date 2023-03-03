@@ -2,8 +2,6 @@
 using TimeJournal.DataModel.Entities;
 using TimeJournal.Repositories;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace TimeJournal.API.Controllers;
 
 [Route("api/[controller]")]
@@ -16,35 +14,34 @@ public class ProjectsController : ControllerBase
         _projectRepository = projectRepository;
     }
 
-    // GET: api/<ProjectsController>
+    public sealed record ProjectDto(int Id, string Name);
+    public sealed record CreateProjectDto(string Name);
+
     [HttpGet]
-    public async Task<Project> Get()
+    public async Task<ActionResult<IEnumerable<ProjectDto>>> GetAll()
     {
-        return await _projectRepository.Get(0);
+        var projects = await _projectRepository.GetAll();
+        var projectsDto = projects.Select(x => new ProjectDto(x.Id, x.Name));
+        return Ok(projectsDto);
     }
 
-    // GET api/<ProjectsController>/5
-    [HttpGet("{id}")]
-    public string Get(int id)
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<ProjectDto>> Get(int id)
     {
-        return "value";
+        var project = await _projectRepository.Get(id);
+        var projectDto = new ProjectDto(project.Id, project.Name);
+        return Ok(projectDto);
     }
 
-    // POST api/<ProjectsController>
     [HttpPost]
-    public void Post([FromBody] string value)
+    public async Task<ActionResult<ProjectDto>> Post([FromBody] CreateProjectDto project)
     {
-    }
-
-    // PUT api/<ProjectsController>/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
-    {
-    }
-
-    // DELETE api/<ProjectsController>/5
-    [HttpDelete("{id}")]
-    public void Delete(int id)
-    {
+        var newProject = new Project
+        {
+            Name = project.Name
+        };
+        await _projectRepository.Add(newProject);
+        var routeValues = new { newProject.Id };
+        return CreatedAtRoute(routeValues, new ProjectDto(newProject.Id, newProject.Name));
     }
 }
