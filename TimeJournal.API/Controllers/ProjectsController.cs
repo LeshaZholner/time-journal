@@ -22,6 +22,7 @@ public class ProjectsController : ControllerBase
     {
         var projects = await _projectRepository.GetAll();
         var projectsDto = projects.Select(x => new ProjectDto(x.Id, x.Name));
+
         return Ok(projectsDto);
     }
 
@@ -30,6 +31,7 @@ public class ProjectsController : ControllerBase
     {
         var project = await _projectRepository.Get(id);
         var projectDto = new ProjectDto(project.Id, project.Name);
+
         return Ok(projectDto);
     }
 
@@ -42,6 +44,7 @@ public class ProjectsController : ControllerBase
         };
         await _projectRepository.Add(newProject);
         var routeValues = new { newProject.Id };
-        return CreatedAtRoute(routeValues, new ProjectDto(newProject.Id, newProject.Name));
+
+        return CreatedAtAction(nameof(Get), routeValues, new ProjectDto(newProject.Id, newProject.Name));
     }
 }

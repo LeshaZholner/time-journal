@@ -29,6 +29,20 @@ public class ProjectRepository : IProjectRepository
     public async Task<Project> Get(int projectId)
     {
         return await _context.Project.FirstOrDefaultAsync(x => x.Id == projectId)
-            ?? throw new ObjectNotFoundException($"Project '{projectId}' not found.");
+            ?? throw ProjectNotFoundException(projectId);
+    }
+
+    public async Task EnsureProject(int id)
+    {
+        var project = await _context.Project.FirstOrDefaultAsync(x => x.Id == id);
+        if (project is null)
+        {
+            throw ProjectNotFoundException(id);
+        }
+    }
+
+    private static ObjectNotFoundException ProjectNotFoundException(int id)
+    {
+        return new ObjectNotFoundException($"Project '{id}' not found.");
     }
 }

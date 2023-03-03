@@ -15,25 +15,39 @@ public class WorkloadsController : ControllerBase
         _workloadRepository = workloadRepository;
     }
     
+    public sealed record WorkloadDto(int Id, int ActivityId, double Duration, DateTime Date);
+    public sealed record CreateWorkloadDto(int ActivityId, double Duration, DateTime Date);
+
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Workload>>> GetAll()
+    public async Task<ActionResult<IEnumerable<WorkloadDto>>> GetAll()
     {
-        return Ok(await _workloadRepository.GetAll());
+        var workloads = await _workloadRepository.GetAll();
+        var workloadsDto = workloads.Select(x => new WorkloadDto(x.Id, x.ActivityId, x.Duration, x.Date));
+
+        return Ok(workloadsDto);
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<Workload>> Get(int id)
+    public async Task<ActionResult<WorkloadDto>> Get(int id)
     {
         var workload = await _workloadRepository.Get(id);
-        return Ok(workload);
+        
+        return Ok(new WorkloadDto(workload.Id, workload.ActivityId, workload.Duration, workload.Date));
     }
 
     [HttpPost]
-    public async Task<ActionResult<Workload>> Post([FromBody] Workload workload)
+    public async Task<ActionResult<WorkloadDto>> Post([FromBody] CreateWorkloadDto workloadDto)
     {
-        await _workloadRepository.Add(workload);
-        
-        var routeValues = new { workload.Id };
-        return CreatedAtRoute(routeValues, workload);
+        var newWorkload = new Workload
+        {
+            ActivityId = workloadDto.ActivityId,
+            Duration = workloadDto.Duration,
+            Date = workloadDto.Date
+        };
+
+        await _workloadRepository.Add(newWorkload);
+        var routeValues = new { newWorkload.Id };
+
+        return CreatedAtAction(nameof(Get), routeValues, new WorkloadDto(newWorkload.Id, newWorkload.ActivityId, newWorkload.Duration, newWorkload.Date));
     }
 }

@@ -22,21 +22,31 @@ public class ActivitiesController : ControllerBase
     public async Task<ActionResult<IEnumerable<Activity>>> GetAll()
     {
         var activities = await _activityRepository.GetAll();
+        var activitiesDto = activities.Select(x => new ActivityDto(x.Id, x.ProjectId, x.Name));
+
         return Ok(activities);
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<Activity>> Get(int id)
+    public async Task<ActionResult<ActivityDto>> Get(int id)
     {
         var activity = await _activityRepository.Get(id);
-        return Ok(activity);
+
+        return Ok(new ActivityDto(activity.Id, activity.ProjectId, activity.Name));
     }
 
     [HttpPost]
-    public async Task<ActionResult<Activity>> Post(Activity activity)
+    public async Task<ActionResult<ActivityDto>> Post([FromBody] CreateActivityDto activityDto)
     {
-        await _activityRepository.Add(activity);
-        var routeValues = new { activity.Id };
-        return CreatedAtRoute(routeValues, activity);
+        var newActivity = new Activity
+        {
+            ProjectId = activityDto.ProjectId,
+            Name = activityDto.Name
+        };
+
+        await _activityRepository.Add(newActivity);
+        var routeValues = new { newActivity.Id };
+
+        return CreatedAtAction(nameof(Get), routeValues, new ActivityDto(newActivity.Id, newActivity.ProjectId, newActivity.Name));
     }
 }

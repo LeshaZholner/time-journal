@@ -8,4 +8,5 @@ public interface IProjectRepository
     Task<IEnumerable<Project>> GetAll();
     Task<Project> Get(int projectId);
     Task Add(Project project);
+    Task EnsureProject(int id);
 }

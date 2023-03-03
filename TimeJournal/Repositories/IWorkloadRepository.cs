@@ -8,4 +8,5 @@ public interface IWorkloadRepository
     Task<IEnumerable<Workload>> GetAll();
     Task<Workload> Get(int id);
     Task Add(Workload workload);
+    Task EnsureWorkload(int id);
 }

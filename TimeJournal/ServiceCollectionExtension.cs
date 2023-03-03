@@ -15,7 +15,9 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddTimeJournalServices(this IServiceCollection services)
     {
         services
-            .AddScoped<IProjectRepository, ProjectRepository>();
+            .AddScoped<IProjectRepository, ProjectRepository>()
+            .AddScoped<IActivityRepository, ActivityRepository>()
+            .AddScoped<IWorkloadRepository, WorkloadRepository>();
 
         return services;
     }
