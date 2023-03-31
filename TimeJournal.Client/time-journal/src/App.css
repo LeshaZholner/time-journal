@@ -1,0 +1,90 @@
+.App {
+  background-color: cornflowerblue;
+  display: flex;
+  flex: 1 1;
+  flex-direction: column;
+}
+
+.time-journal {
+  display: block;
+  margin: 0 auto;
+  background-color: #ffffff;
+}
+
+.time-journal-head {
+  display: flex;
+}
+
+.time-journal-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.time-journal-row {
+  display: flex;
+  border-bottom: 1px solid #a9a9a9;
+}
+
+.time-journal-right-part {
+  display: flex;
+}
+
+.time-journal-left-part {
+  display: flex;
+  flex-direction: column;
+  width: 450px;
+  min-height: 46px;
+}
+
+.time-journal-cell-wrapper {
+  display: flex;
+  width: 38px;
+  height: 100%;
+  border-left: 1px solid #a9a9a9;
+}
+
+.time-journal-cell-wrapper-header {
+  background-color: #555555;
+  color: #ffffff;
+}
+
+.time-journal-header-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1 0 auto;
+}
+
+.time-journal-workload-cell {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.time-journal-workload-cell-input {
+  width: 100%;
+  padding: 3px;
+  text-align: center;
+  border: none;
+}
+
+.time-journal-left-header-container {
+  background-color: #555555;
+  color: #ffffff;
+  line-height: 46px;
+}
+
+.time-journal-left-activity-container {
+  color: #555555;
+  line-height: 46px;
+}
+
+.header-title {
+  margin-left: 40px;
+}
+
+.activity-title {
+  margin-left: 40px;
+}
+
