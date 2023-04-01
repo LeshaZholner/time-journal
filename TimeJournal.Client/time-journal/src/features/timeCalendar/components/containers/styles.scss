@@ -1,0 +1,15 @@
+.time-calendar-row {
+  display: flex;
+  border-bottom: 1px solid #a9a9a9;
+}
+
+.time-calendar-right-part {
+  display: flex;
+}
+
+.time-calendar-left-part {
+  display: flex;
+  flex-direction: column;
+  width: 450px;
+  min-height: 46px;
+}
